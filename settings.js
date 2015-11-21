@@ -30,11 +30,12 @@ router.post('/', function(req,res) {
   var str = "var config = module.exports = {\n" +
             format + "}";
 
-  fs.writeFile('config', str, function(err) {
+  fs.writeFile('test', str, function(err) {
     if (err) throw err;
   });
   setTimeout(function() {
     // @TODO THIS IS BAD. And I dont feel bad.
+    // gives it time to save, then reload the config.
     process.exit('1');
   }, 500);
   

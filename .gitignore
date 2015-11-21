@@ -1,0 +1,5 @@
+.app.js.swp
+.settings.js.swp
+.status.js.swp
+node_modules
+test

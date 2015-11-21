@@ -4,7 +4,8 @@ var express = require('express'),
     Q = require('q'),
     fs = require('fs'),
     bodyParser = require('body-parser'),
-    settings = require('./settings');
+    settings = require('./settings'),
+    status = require('./status');
 
 var conf = require('./config');
 
@@ -21,10 +22,12 @@ app.engine('hbs', hbs.express4({
 }));
 
 app.use('/settings', settings);
+app.use('/status', status);
 
 var movies = {};
 var tv = {};
-
+var lock = false;
+var progress = {};
 
 app.get('/', function(req,res) {
   
@@ -84,5 +87,4 @@ function getTV() {
      }
   });
   return deferred.promise;
-   
 }

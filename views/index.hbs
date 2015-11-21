@@ -1,11 +1,6 @@
 {{!< default}}
 
 {{#contentFor 'pageStyles'}}
-<style>
-  .clicker {
-    color: blue;
-  };
-</style>
 {{/contentFor}}
 
 <h1>{{title}} </h1>
@@ -35,18 +30,19 @@
 	</div>
 
 </div>
-
-
-
+<div class="row">
+	<div class="col-xs-12">
+    <div class="processBox">
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
     	$('#multiselect').multiselect();
       $('#multiselect_submit').on('click', function() {
-        alert('holla');
+        $('.btn').prop('disabled', true);
+
+        console.log($('#multiselect_to').val());
       });
     });
 </script>
-</br>
-</br>
-</br>
-</br>
