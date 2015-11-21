@@ -1,0 +1,15 @@
+{{!< default}}
+
+<h1>{{title}}</h1>
+
+<form action="/settings" method="post">
+  <ul>
+  {{#each conf}}
+    <li> 
+      {{@key}} :
+      <input type="text" name="{{@key}}" value={{@this}}>
+    </li>
+  {{/each}}
+  </ul>
+  <input type="submit" value="SAVE">
+</form>

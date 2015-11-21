@@ -1,0 +1,9 @@
+var config = module.exports = {
+	title : 'Media',
+	movieDir : '/nana/Movies',
+	tvDir : '/nana/TV',
+	port : '8093',
+	external : '/dev/sdb1',
+	externalMount : '/media/external',
+	saveRedirect : '/'
+}

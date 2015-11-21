@@ -1,0 +1,12 @@
+{
+  "name": "mediaTransferPro",
+  "description": "Transfer media at the speed of snails",
+  "main": "app.js",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "^4.13.3",
+    "express-hbs": "^0.8.4",
+    "q": "^1.4.1"
+  },
+  "engine": "node >= 0.10.30"
+}
