@@ -22,7 +22,7 @@
 		<button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
 		<button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
 		<button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
-		<button type="button" id="multiselect_submit" class="btn btn-block">Transfer Files</button>
+		<button type="button" id="multiselect_submit" class="btn btn-block">Set Queue</button>
 	</div>
 	
 	<div class="col-xs-5">
@@ -38,11 +38,20 @@
 </div>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
-    	$('#multiselect').multiselect();
+      $('#multiselect').multiselect();
       $('#multiselect_submit').on('click', function() {
-        $('.btn').prop('disabled', true);
+        //$('.btn').prop('disabled', true);
 
-        console.log($('#multiselect_to').val());
+        var data = {'media': $("#multiselect_to option").map(function(){ return this.value }).get()};
+        $.ajax({
+          type: "POST",
+          url: "/request",
+          data: data,
+          success: success,
+          dataType: 'json'
+        });
       });
     });
+    function success() {
+    };
 </script>

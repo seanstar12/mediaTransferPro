@@ -5,7 +5,7 @@ var express = require('express'),
     fs = require('fs'),
     bodyParser = require('body-parser'),
     settings = require('./settings'),
-    status = require('./status');
+    request = require('./request');
 
 var conf = require('./config');
 
@@ -22,25 +22,25 @@ app.engine('hbs', hbs.express4({
 }));
 
 app.use('/settings', settings);
-app.use('/status', status);
+app.use('/request', request);
 
-var movies = {};
-var tv = {};
-var lock = false;
-var progress = {};
+GLOBAL.movies = {};
+GLOBAL.tv = {};
+GLOBAL.lock = false;
+GLOBAL.progress = {};
+GLOBAL.queue = [];
 
 app.get('/', function(req,res) {
   
   getMovies()
   .then ( getTV())
   .then ( function () {
-  
+   console.log(movies); 
   var page = {
     title: conf.title,
     movies: movies,
     tv: tv
   };
-  console.log(page);
   res.render('index', page);
   });
 });
@@ -57,7 +57,11 @@ function getMovies() {
          files = files.sort();
          for (var i = 0; i < files.length; i++){
            var _url = '';
-           _list.push({name:files[i],type:'movie',num:i});
+           _list.push({
+             name:files[i],
+             type:'movie',
+             num:i, 
+             path: conf.movieDir + '/' + files[i]});
          }
          movies = _list;
          deferred.resolve();
@@ -88,3 +92,18 @@ function getTV() {
   });
   return deferred.promise;
 }
+
+// For Queue Watching // file checking
+Array.observe(queue, function(changes) {
+  
+  // handle changes... in this case, we'll just log them 
+  changes.forEach(function(change) {
+    console.log(Object.keys(change).reduce(function(p, c) {
+      if (c !== "object" && c in change) {
+        p.push(c + ": " + JSON.stringify(change[c]));
+      }
+      return p;
+    }, []).join(", "));
+  });
+  
+});

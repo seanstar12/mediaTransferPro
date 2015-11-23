@@ -1,4 +1,5 @@
 .app.js.swp
+.request.js.swp
 .settings.js.swp
 .status.js.swp
 node_modules
