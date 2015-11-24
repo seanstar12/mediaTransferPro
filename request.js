@@ -6,6 +6,12 @@ var express = require('express'),
 
 var router = express.Router();
 
+router.use('/', function (req, res, next) {
+  console.log('Lock Check');
+
+  next();
+});
+
 router.get('/', function(req,res) {
   getStatus()
   .then ( function (reqStatus) {
@@ -13,25 +19,34 @@ router.get('/', function(req,res) {
   });
 });
 
+router.get('/clear', function(req,res) {
+  queue = [];
+  res.redirect('/');
+});
+
+router.get('/movies', function(req,res) {
+  res.send(movies);
+});
+
+router.get('/clearmovies', function(req,res) {
+  movies = [];
+  res.send(movies);
+});
+
 router.post('/', function(req,res) {
+  temp = queue;
   doQueue(req.body)
-  .then( function (resol) {
-    res.send(JSON.stringify(resol));
-  });
 });
 
 // Lock Middleware
-//router.use('/', function (req, res, next) {
-//  console.log('Lock Check');
-//
-//  next();
-//});
 
 function doQueue(req) {
-  console.log(req);
   var deferred = Q.defer();
   req.media.forEach(function(media) {
-    queue.push(movies[media]);
+    if (!containsObject(movies[media], queue)) {
+      // @TODO Doesn't work, the memory is cleared between browser refresh
+      queue.push(movies[media]);
+    }
   }); 
   deferred.resolve();
   return deferred.promise;
@@ -63,6 +78,17 @@ function copyFile(source, target) {
   rd.pipe(wr);
 
   return deferred.promise;
+}
+
+function containsObject(obj, list) {
+  var i;
+  for (i = 0; i < list.length; i++) {
+    if (list[i] === obj) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 module.exports = router;

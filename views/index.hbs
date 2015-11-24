@@ -22,7 +22,13 @@
 		<button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
 		<button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
 		<button type="button" id="multiselect_leftAll" class="btn btn-block"><i class="glyphicon glyphicon-backward"></i></button>
-		<button type="button" id="multiselect_submit" class="btn btn-block">Set Queue</button>
+		<button type="button" id="multiselect_submit" class="btn btn-block btn-info">Set Queue</button>
+    <div class="admin">
+		<button type="button" id="multiselect_clear" class="btn btn-block btn-danger">Clear Queue</button>
+		<button type="button" id="multiselect_clear_movies" class="btn btn-block btn-danger">Clear Movie Cache</button>
+		<button type="button" id="multiselect_umount" class="btn btn-block btn-danger">Unmount Drive</button>
+		<button type="button" id="multiselect_mount" class="btn btn-block btn-danger">Mount Drive</button>
+    </div>
 	</div>
 	
 	<div class="col-xs-5">
@@ -33,6 +39,27 @@
 <div class="row">
 	<div class="col-xs-12">
     <div class="processBox">
+    <ul>
+      {{#each queue}}
+        <ul>
+          <li>{{num}}  -  {{name}}</li>
+        </ul>
+      {{/each}}
+    </ul>
+    </div>
+  </div>
+</div>
+<div class="row">
+	<div class="col-xs-12">
+    <div class="processBox">
+    <h3>Drive Contents</h3>
+    <ul>
+      {{#each externalMovies}}
+        <ul>
+          <li>{{num}}  -  {{name}}</li>
+        </ul>
+      {{/each}}
+    </ul>
     </div>
   </div>
 </div>
@@ -43,13 +70,27 @@
         //$('.btn').prop('disabled', true);
 
         var data = {'media': $("#multiselect_to option").map(function(){ return this.value }).get()};
-        $.ajax({
-          type: "POST",
-          url: "/request",
-          data: data,
-          success: success,
-          dataType: 'json'
-        });
+        if (data.media.length) {
+          $.ajax({
+            type: "POST",
+            url: "/api/request",
+            data: data,
+            success: success,
+            dataType: 'json'
+          });
+        }
+      });
+      $('#multiselect_clear').on('click', function() {
+        $.get('/api/request/clear');
+      });
+      $('#multiselect_clear_movies').on('click', function() {
+        $.get('/api/request/clearmovies');
+      });
+      $('#multiselect_umount').on('click', function() {
+        $.get('/api/drive/umount');
+      });
+      $('#multiselect_mount').on('click', function() {
+        $.get('/api/drive/mount');
       });
     });
     function success() {

@@ -30,7 +30,7 @@ router.post('/', function(req,res) {
   var str = "var config = module.exports = {\n" +
             format + "}";
 
-  fs.writeFile('test', str, function(err) {
+  fs.writeFile('config', str, function(err) {
     if (err) throw err;
   });
   setTimeout(function() {
