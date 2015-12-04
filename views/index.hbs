@@ -12,7 +12,7 @@
     <select name="from[]" id="multiselect" class="form-control" size="25" multiple="multiple">
       {{#each movies}}
         <ul>
-          <option value="{{num}}">{{name}}</li>
+          <option value="{{inode}}">{{title}} -- {{humanSize}}</li>
         </ul>
       {{/each}}
     </select>
@@ -25,9 +25,12 @@
 		<button type="button" id="multiselect_submit" class="btn btn-block btn-info">Set Queue</button>
     <div class="admin">
 		<button type="button" id="multiselect_clear" class="btn btn-block btn-danger">Clear Queue</button>
-		<button type="button" id="multiselect_clear_movies" class="btn btn-block btn-danger">Clear Movie Cache</button>
+		<button type="button" id="multiselect_clear_drive" class="btn btn-block btn-danger">Clear Drive Cache</button>
 		<button type="button" id="multiselect_umount" class="btn btn-block btn-danger">Unmount Drive</button>
 		<button type="button" id="multiselect_mount" class="btn btn-block btn-danger">Mount Drive</button>
+		<button type="button" id="multiselect_hash" class="btn btn-block btn-danger">Recalculate Base Encryption Hash</button>
+		<button type="button" id="multiselect_drive_scan" class="btn btn-block btn-danger">Force Drive Scan</button>
+		<button type="button" id="multiselect_drive_transfer" class="btn btn-block btn-danger">Force Transfer</button>
     </div>
 	</div>
 	
@@ -42,10 +45,11 @@
     <ul>
       {{#each queue}}
         <ul>
-          <li>{{num}}  -  {{name}}</li>
+          <li>{{title}} - {{humanSize}}</li>
         </ul>
       {{/each}}
     </ul>
+    {{queueSize}}
     </div>
   </div>
 </div>
@@ -56,7 +60,7 @@
     <ul>
       {{#each externalMovies}}
         <ul>
-          <li>{{num}}  -  {{name}}</li>
+          <li>{{title}} - {{humanSize}}</li>
         </ul>
       {{/each}}
     </ul>
@@ -83,14 +87,23 @@
       $('#multiselect_clear').on('click', function() {
         $.get('/api/request/clear');
       });
-      $('#multiselect_clear_movies').on('click', function() {
-        $.get('/api/request/clearmovies');
+      $('#multiselect_clear_drive').on('click', function() {
+        $.get('/api/drive/clear');
       });
       $('#multiselect_umount').on('click', function() {
         $.get('/api/drive/umount');
       });
       $('#multiselect_mount').on('click', function() {
         $.get('/api/drive/mount');
+      });
+      $('#multiselect_hash').on('click', function() {
+        $.get('/movies/clear');
+      });
+      $('#multiselect_drive_scan').on('click', function() {
+        $.get('/api/drive/scan');
+      });
+      $('#multiselect_drive_transfer').on('click', function() {
+        $.get('/api/drive/transfer');
       });
     });
     function success() {

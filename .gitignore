@@ -5,3 +5,4 @@
 *.swp
 node_modules
 test
+movies.db
